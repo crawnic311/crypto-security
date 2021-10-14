@@ -3,12 +3,15 @@ const users = []
 
 module.exports = {
     login: (req, res) => {
-      console.log('Logging In User')
-      console.log(req.body)
       const { username, password } = req.body
       for (let i = 0; i < users.length; i++) {
-        if (users[i].username === username && users[i].password === password) {
-          res.status(200).send(users[i])
+        if (users[i].username === username) {
+          const userExists = bcrypt.compareSync(password, user[i].passwordHash)
+          if(userExists) {
+            let returnUser = {...user[i]}
+            delete returnUser.passwordHash
+            res.status(200).send(returnUser)
+          } 
         }
       }
       res.status(400).send("User not found.")
@@ -29,5 +32,7 @@ module.exports = {
         let returnUser = {...newUser}
         delete returnUser.passwordHash
         res.status(200).send(returnUser)
+        console.log(returnUser)
     }
 }
+
